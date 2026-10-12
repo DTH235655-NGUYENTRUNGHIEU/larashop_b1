@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoaiSanPhamController;
 use App\Http\Controllers\HangSanXuatController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\TinhTrangController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\UserController;
 
+// Tuyến đường xác thực (Đăng nhập, Đăng ký, Đổi mật khẩu...)
 Auth::routes();
 
 // Trang chủ
@@ -31,21 +34,21 @@ Route::get('/hangsanxuat/sua/{id}', [HangSanXuatController::class, 'getSua'])->n
 Route::post('/hangsanxuat/sua/{id}', [HangSanXuatController::class, 'postSua'])->name('hangsanxuat.sua');
 Route::get('/hangsanxuat/xoa/{id}', [HangSanXuatController::class, 'getXoa'])->name('hangsanxuat.xoa');
 
-// Quản lý Sản phẩm
-Route::get('/sanpham', [SanPhamController::class, 'getDanhSach'])->name('sanpham');
-Route::get('/sanpham/them', [SanPhamController::class, 'getThem'])->name('sanpham.them');
-Route::post('/sanpham/them', [SanPhamController::class, 'postThem'])->name('sanpham.them'); 
-Route::get('/sanpham/sua/{id}', [SanPhamController::class, 'getSua'])->name('sanpham.sua');
-Route::post('/sanpham/sua/{id}', [SanPhamController::class, 'postSua'])->name('sanpham.sua');
-Route::get('/sanpham/xoa/{id}', [SanPhamController::class, 'getXoa'])->name('sanpham.xoa');
-
-// Quản lý Tình trạng
+// Quản lý Tình trạng đơn hàng
 Route::get('/tinhtrang', [TinhTrangController::class, 'getDanhSach'])->name('tinhtrang');
 Route::get('/tinhtrang/them', [TinhTrangController::class, 'getThem'])->name('tinhtrang.them');
 Route::post('/tinhtrang/them', [TinhTrangController::class, 'postThem'])->name('tinhtrang.them');
 Route::get('/tinhtrang/sua/{id}', [TinhTrangController::class, 'getSua'])->name('tinhtrang.sua');
 Route::post('/tinhtrang/sua/{id}', [TinhTrangController::class, 'postSua'])->name('tinhtrang.sua');
 Route::get('/tinhtrang/xoa/{id}', [TinhTrangController::class, 'getXoa'])->name('tinhtrang.xoa');
+
+// Quản lý Sản phẩm
+Route::get('/sanpham', [SanPhamController::class, 'getDanhSach'])->name('sanpham');
+Route::get('/sanpham/them', [SanPhamController::class, 'getThem'])->name('sanpham.them');
+Route::post('/sanpham/them', [SanPhamController::class, 'postThem'])->name('sanpham.them');
+Route::get('/sanpham/sua/{id}', [SanPhamController::class, 'getSua'])->name('sanpham.sua');
+Route::post('/sanpham/sua/{id}', [SanPhamController::class, 'postSua'])->name('sanpham.sua');
+Route::get('/sanpham/xoa/{id}', [SanPhamController::class, 'getXoa'])->name('sanpham.xoa');
 
 // Quản lý Đơn hàng
 Route::get('/donhang', [DonHangController::class, 'getDanhSach'])->name('donhang');
@@ -55,7 +58,7 @@ Route::get('/donhang/sua/{id}', [DonHangController::class, 'getSua'])->name('don
 Route::post('/donhang/sua/{id}', [DonHangController::class, 'postSua'])->name('donhang.sua');
 Route::get('/donhang/xoa/{id}', [DonHangController::class, 'getXoa'])->name('donhang.xoa');
 
-// Quản lý Tài khoản người dùng
+// Quản lý Người dùng
 Route::get('/nguoidung', [UserController::class, 'getDanhSach'])->name('nguoidung');
 Route::get('/nguoidung/them', [UserController::class, 'getThem'])->name('nguoidung.them');
 Route::post('/nguoidung/them', [UserController::class, 'postThem'])->name('nguoidung.them');
