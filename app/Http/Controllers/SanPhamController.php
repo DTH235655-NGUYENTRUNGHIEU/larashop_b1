@@ -93,4 +93,23 @@ class SanPhamController extends Controller
 
         return redirect()->route('sanpham');
     }
+
+    // Nhập từ Excel
+    public function postNhap(Request $request)
+    {
+        $request->validate([
+            'file_excel' => ['required', 'file', 'mimes:xlsx,xls', 'max:2048'],
+        ]);
+
+        Excel::import(new SanPhamImport(), $request->file('file_excel'));
+
+        return redirect()->route('sanpham');
+    }
+
+    // Xuất ra Excel
+    public function getXuat()
+    {
+        $filename = 'san-pham.xlsx';
+        return Excel::download(new SanPhamExport(), $filename);
+    }
 }
