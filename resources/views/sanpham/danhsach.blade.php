@@ -28,7 +28,7 @@
                 <tr>
                     <td class="align-middle">{{ $loop->iteration }}</td>
                     <td class="align-middle text-center">
-                        <img src="{{ asset('storage/app/private/' . $value->hinhanh) }}" width="80" class="img-thumbnail" />
+                        <img src="{{ asset($value->hinhanh) }}" width="80" class="img-thumbnail" />
                     </td>
                     <td class="align-middle">{{ $value->LoaiSanPham->tenloai }}</td>
                     <td class="align-middle">{{ $value->HangSanXuat->tenhang }}</td>
