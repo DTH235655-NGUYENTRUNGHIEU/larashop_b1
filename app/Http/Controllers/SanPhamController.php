@@ -7,6 +7,9 @@ use App\Models\LoaiSanPham;
 use App\Models\HangSanXuat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Imports\SanPhamImport;
+use App\Exports\SanPhamExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SanPhamController extends Controller
 {
