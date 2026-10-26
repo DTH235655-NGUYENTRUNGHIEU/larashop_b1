@@ -9,8 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Table('loaisanpham')]
 class LoaiSanPham extends Model
 {
-	public function SanPham(): HasMany
-	{
-		return $this->hasMany(SanPham::class, 'loaisanpham_id', 'id');
-	}
+    protected $fillable = [
+        'tenloai',
+        'tenloai_slug',
+    ];
+
+    public function SanPham(): HasMany
+    {
+        return $this->hasMany(SanPham::class, 'loaisanpham_id', 'id');
+    }
 }
