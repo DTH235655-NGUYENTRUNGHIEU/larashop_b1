@@ -88,4 +88,3 @@
 </script>
 @enderror
 @endsection
-```[cite: 8, 9, 10]
