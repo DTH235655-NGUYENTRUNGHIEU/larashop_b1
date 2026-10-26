@@ -11,6 +11,11 @@ use App\Http\Controllers\TinhTrangController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\UserController;
 
+
+
+// Quản lý Sản phẩm
+Route::post('/sanpham/nhap', [SanPhamController::class, 'postNhap'])->name('sanpham.nhap');
+Route::get('/sanpham/xuat', [SanPhamController::class, 'getXuat'])->name('sanpham.xuat');
 // Tuyến đường xác thực (Đăng nhập, Đăng ký, Đổi mật khẩu...)
 Auth::routes();
 
