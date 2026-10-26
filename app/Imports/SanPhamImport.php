@@ -11,15 +11,14 @@ class SanPhamImport implements ToModel, WithHeadingRow
 {
     public function model(array $row): ?Model
     {
-        dd($row);
         return new SanPham([
-            'loaisanpham_id'  => $row['ma_loai'],
-            'hangsanxuat_id'  => $row['ma_hang_san_xuat'],
-            'tensanpham'      => $row['ten_san_pham'],
-            'tensanpham_slug' => $row['ten_san_pham_khong_dau'],
-            'soluong'         => $row['so_luong'],
-            'dongia'          => $row['don_gia'],
-            'hinhanh'         => $row['hinh_anh'],
+            'loaisanpham_id'  => $row['loaisanpham_id'],
+            'hangsanxuat_id'  => $row['hangsanxuat_id'],
+            'tensanpham'      => $row['tensanpham'],
+            'tensanpham_slug' => $row['tensanpham_slug'],
+            'soluong'         => $row['soluong'],
+            'dongia'          => $row['dongia'],
+            'hinhanh'         => $row['hinhanh'],
         ]);
     }
 }
