@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'LaraShop') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -22,7 +22,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-info shadow-sm">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ route('frontend') }}">
-                    <i class="fa-light fa-cart-shopping"></i> {{ config('app.name', 'Laravel') }}
+                    <i class="fa-light fa-cart-shopping"></i> {{ config('app.name', 'LaraShop') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -31,38 +31,36 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('loaisanpham') }}">
-                                    <i class="fa-light fa-fw fa-diagram-project"></i> Loại sản phẩm
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('hangsanxuat') }}">
-                                    <i class="fa-light fa-fw fa-copyright"></i> Hãng sản xuất
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('tinhtrang') }}">
-                                    <i class="fa-light fa-fw fa-list-check"></i> Tình trạng
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('sanpham') }}">
-                                    <i class="fa-light fa-fw fa-box"></i> Sản phẩm
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('donhang') }}">
-                                    <i class="fa-light fa-fw fa-file-invoice"></i> Đơn hàng
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('nguoidung') }}">
-                                    <i class="fa-light fa-fw fa-users"></i> Tài khoản
-                                </a>
-                            </li>
-                        @endauth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('loaisanpham') }}">
+                                <i class="fa-light fa-fw fa-diagram-project"></i> Loại sản phẩm
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('hangsanxuat') }}">
+                                <i class="fa-light fa-fw fa-copyright"></i> Hãng sản xuất
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sanpham') }}">
+                                <i class="fa-light fa-fw fa-box"></i> Sản phẩm
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tinhtrang') }}">
+                                <i class="fa-light fa-fw fa-list-check"></i> Tình trạng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('donhang') }}">
+                                <i class="fa-light fa-fw fa-file-invoice"></i> Đơn hàng
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('nguoidung') }}">
+                                <i class="fa-light fa-fw fa-users"></i> Tài khoản
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -87,7 +85,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <i class="fa-light fa-fw fa-user"></i> {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -112,7 +110,7 @@
         </main>
         
         <hr class="shadow-sm" />
-        <footer>Bản quyền &copy; {{ date('Y') }} bởi {{ config('app.name', 'Laravel') }}.</footer>
+        <footer>Bản quyền &copy; {{ date('Y') }} bởi {{ config('app.name', 'LaraShop') }}.</footer>
     </div>
     
     <!-- Scripts -->
