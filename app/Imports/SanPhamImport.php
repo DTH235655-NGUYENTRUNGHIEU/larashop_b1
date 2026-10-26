@@ -11,6 +11,7 @@ class SanPhamImport implements ToModel, WithHeadingRow
 {
     public function model(array $row): ?Model
     {
+        dd($row);
         return new SanPham([
             'loaisanpham_id'  => $row['ma_loai'],
             'hangsanxuat_id'  => $row['ma_hang_san_xuat'],
