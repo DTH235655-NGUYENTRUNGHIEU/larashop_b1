@@ -4,17 +4,15 @@
 <div class="card">
     <div class="card-header">Thêm loại sản phẩm</div>
     <div class="card-body">
-        <form action="{{ route('loaisanpham.them') }}" method="post">
+        <form action="{{ route('admin.loaisanpham.them') }}" method="post">
             @csrf
-
             <div class="mb-3">
-                <label class="form-label" for="tenloai">Tên loại</label>
+                <label class="form-label" for="tenloai">Tên loại sản phẩm</label>
                 <input type="text" class="form-control @error('tenloai') is-invalid @enderror" id="tenloai" name="tenloai" value="{{ old('tenloai') }}" required />
                 @error('tenloai')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-
             <button type="submit" class="btn btn-primary"><i class="fa-light fa-save"></i> Thêm vào CSDL</button>
         </form>
     </div>

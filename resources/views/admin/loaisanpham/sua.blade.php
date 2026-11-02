@@ -4,17 +4,15 @@
 <div class="card">
     <div class="card-header">Sửa loại sản phẩm</div>
     <div class="card-body">
-        <form action="{{ route('loaisanpham.sua', ['id' => $loaisanpham->id]) }}" method="post">
+        <form action="{{ route('admin.loaisanpham.sua', ['id' => $loaisanpham->id]) }}" method="post">
             @csrf
-
             <div class="mb-3">
-                <label class="form-label" for="tenloai">Tên loại</label>
+                <label class="form-label" for="tenloai">Tên loại sản phẩm</label>
                 <input type="text" class="form-control @error('tenloai') is-invalid @enderror" id="tenloai" name="tenloai" value="{{ $loaisanpham->tenloai }}" required />
                 @error('tenloai')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-
             <button type="submit" class="btn btn-primary"><i class="fa-light fa-save"></i> Cập nhật</button>
         </form>
     </div>
