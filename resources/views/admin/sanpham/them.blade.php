@@ -4,32 +4,31 @@
 <div class="card">
     <div class="card-header">Thêm sản phẩm</div>
     <div class="card-body">
-        <form action="{{ route('sanpham.them') }}" method="post">
+        <form action="{{ route('admin.sanpham.them') }}" method="post" enctype="multipart/form-data">
             @csrf
-
             <div class="mb-3">
                 <label class="form-label" for="loaisanpham_id">Loại sản phẩm</label>
                 <select class="form-select @error('loaisanpham_id') is-invalid @enderror" id="loaisanpham_id" name="loaisanpham_id" required>
-                    <option value="">-- Chọn --</option>
+                    <option value="">-- Chọn loại --</option>
                     @foreach($loaisanpham as $value)
-                        <option value="{{ $value->id }}">{{ $value->tenloai }}</option>
+                        <option value="{{ $value->id }}" {{ old('loaisanpham_id') == $value->id ? 'selected' : '' }}>{{ $value->tenloai }}</option>
                     @endforeach
                 </select>
                 @error('loaisanpham_id')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="hangsanxuat_id">Hãng sản xuất</label>
                 <select class="form-select @error('hangsanxuat_id') is-invalid @enderror" id="hangsanxuat_id" name="hangsanxuat_id" required>
-                    <option value="">-- Chọn --</option>
+                    <option value="">-- Chọn hãng --</option>
                     @foreach($hangsanxuat as $value)
-                        <option value="{{ $value->id }}">{{ $value->tenhang }}</option>
+                        <option value="{{ $value->id }}" {{ old('hangsanxuat_id') == $value->id ? 'selected' : '' }}>{{ $value->tenhang }}</option>
                     @endforeach
                 </select>
                 @error('hangsanxuat_id')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
@@ -37,31 +36,32 @@
                 <label class="form-label" for="tensanpham">Tên sản phẩm</label>
                 <input type="text" class="form-control @error('tensanpham') is-invalid @enderror" id="tensanpham" name="tensanpham" value="{{ old('tensanpham') }}" required />
                 @error('tensanpham')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label class="form-label" for="soluong">Số lượng</label>
-                <input type="number" min="0" class="form-control @error('soluong') is-invalid @enderror" id="soluong" name="soluong" value="{{ old('soluong') }}" required />
-                @error('soluong')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
-                @enderror
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="soluong">Số lượng</label>
+                    <input type="number" min="0" class="form-control @error('soluong') is-invalid @enderror" id="soluong" name="soluong" value="{{ old('soluong', 1) }}" required />
+                    @error('soluong')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="dongia">Đơn giá</label>
+                    <input type="number" min="0" class="form-control @error('dongia') is-invalid @enderror" id="dongia" name="dongia" value="{{ old('dongia', 0) }}" required />
+                    @error('dongia')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="dongia">Đơn giá</label>
-                <input type="number" min="0" class="form-control @error('dongia') is-invalid @enderror" id="dongia" name="dongia" value="{{ old('dongia') }}" required />
-                @error('dongia')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
-                @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label" for="hinhanh">Hình ảnh sản phẩm</label>
-                <input type="text" class="form-control @error('hinhanh') is-invalid @enderror" id="hinhanh" name="hinhanh" value="{{ old('hinhanh') }}" />
+                <label class="form-label" for="hinhanh">Hình ảnh</label>
+                <input type="file" class="form-control @error('hinhanh') is-invalid @enderror" id="hinhanh" name="hinhanh" />
                 @error('hinhanh')
-                    <div class="invalid-feedback"><strong>{{ $message }}</strong></div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
