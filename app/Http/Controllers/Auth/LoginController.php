@@ -40,13 +40,27 @@ class LoginController extends Controller
     }
 
     protected function redirectTo()
-{
-    if (Auth::user()->role == 'admin') {
-        return route('admin.home');
-    } elseif (Auth::user()->role == 'user') {
-        return route('user.home');
-    } else {
-        return route('frontend.home');
+    {
+        if (Auth::user()->role == 'admin') {
+            return route('admin.home');
+        } elseif (Auth::user()->role == 'user') {
+            return route('user.home');
+        } else {
+            return route('frontend.home');
+        }
     }
-}
+
+    public function username()
+    {
+        $identity = request()->get('email');
+        if (is_numeric($identity)) {
+            $fieldName = 'phone';
+        } elseif (filter_var($identity, FILTER_VALIDATE_EMAIL)) {
+            $fieldName = 'email';
+        } else {
+            $fieldName = 'username';
+        }
+        request()->merge([$fieldName => $identity]);
+        return $fieldName;
+    }
 }
