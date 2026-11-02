@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DonHang;
-use App\Models\DonHang_ChiTiet;
 use App\Models\TinhTrang;
 use Illuminate\Http\Request;
 
@@ -11,43 +10,52 @@ class DonHangController extends Controller
 {
     public function getDanhSach()
     {
-        $donhang = DonHang::orderBy('created_at', 'desc')->get();
-        return view('donhang.danhsach', compact('donhang'));
+        $donhang = DonHang::with(['User', 'TinhTrang'])->orderBy('created_at', 'desc')->paginate(15);
+        return view('admin.donhang.danhsach', compact('donhang'));
     }
 
-    public function getThem() {}
-    public function postThem(Request $request) {}
+    public function getThem()
+    {
+        return view('admin.donhang.them');
+    }
+
+    public function postThem(Request $request)
+    {
+        // Xử lý thêm đơn hàng từ phía admin (nếu có form)
+        return redirect()->route('admin.donhang');
+    }
 
     public function getSua($id)
     {
-        $donhang = DonHang::find($id);
+        $donhang = DonHang::with(['DonHang_ChiTiet.SanPham'])->findOrFail($id);
         $tinhtrang = TinhTrang::all();
-        return view('donhang.sua', compact('donhang', 'tinhtrang'));
+        return view('admin.donhang.sua', compact('donhang', 'tinhtrang'));
     }
 
     public function postSua(Request $request, $id)
     {
         $request->validate([
-            'tinhtrang_id'      => ['required'],
-            'dienthoaigiaohang' => ['required', 'string', 'max:20'],
-            'diachigiaohang'    => ['required', 'string', 'max:255'],
+            'tinhtrang_id'        => ['required', 'integer'],
+            'dienthoaigiaohang'   => ['required', 'string', 'max:20'],
+            'diachigiaohang'      => ['required', 'string', 'max:255'],
         ]);
 
-        $orm = DonHang::find($id);
+        $orm = DonHang::findOrFail($id);
         $orm->tinhtrang_id = $request->tinhtrang_id;
         $orm->dienthoaigiaohang = $request->dienthoaigiaohang;
         $orm->diachigiaohang = $request->diachigiaohang;
         $orm->save();
 
-        return redirect()->route('donhang');
+        return redirect()->route('admin.donhang');
     }
 
     public function getXoa($id)
     {
-        DonHang_ChiTiet::where('donhang_id', $id)->delete();
-        $orm = DonHang::find($id);
+        $orm = DonHang::findOrFail($id);
+        // Xóa các chi tiết đơn hàng tương ứng trước khi xóa đơn hàng chính
+        $orm->DonHang_ChiTiet()->delete();
         $orm->delete();
 
-        return redirect()->route('donhang');
+        return redirect()->route('admin.donhang');
     }
 }
