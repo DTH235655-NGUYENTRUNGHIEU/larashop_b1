@@ -2,90 +2,107 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use App\Models\HangSanXuat;
+use App\Imports\HangSanXuatImport;
+use App\Exports\HangSanXuatExport;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HangSanXuatController extends Controller
 {
     public function getDanhSach()
-	{
-		$hangsanxuat = HangSanXuat::all();
-		return view('hangsanxuat.danhsach', compact('hangsanxuat'));
-	}
-	
-	public function getThem()
-	{
-		return view('hangsanxuat.them');
-	}
-	
-	
-	public function getSua($id)
-	{
-		$hangsanxuat = HangSanXuat::find($id);
-		return view('hangsanxuat.sua', compact('hangsanxuat'));
-	}
-	public function postThem(Request $request)
-	{
-		$request->validate([
-			'tenhang' => ['required', 'string', 'max:255', 'unique:hangsanxuat'],
-			'hinhanh' => ['nullable', 'image', 'max:1024']
-		]);
+    {
+        $hangsanxuat = HangSanXuat::all();
+        return view('admin.hangsanxuat.danhsach', compact('hangsanxuat'));
+    }
 
-		$path = null;
-		if ($request->hasFile('hinhanh')) {
-			$file = $request->file('hinhanh');
-			$extension = $file->extension();
-			$filename = Str::slug($request->tenhang, '-') . '.' . $extension;
-			$path = $file->storeAs('hang-san-xuat', $filename);
-		}
+    public function getThem()
+    {
+        return view('admin.hangsanxuat.them');
+    }
 
-		$orm = new HangSanXuat();
-		$orm->tenhang = $request->tenhang;
-		$orm->tenhang_slug = Str::slug($request->tenhang, '-');
-		$orm->hinhanh = $path ?? null;
-		$orm->save();
+    public function postThem(Request $request)
+    {
+        $request->validate([
+            'tenhang' => ['required', 'string', 'max:255', 'unique:hangsanxuat'],
+            'hinhanh' => ['nullable', 'image', 'max:2048'],
+        ]);
 
-		return redirect()->route('hangsanxuat');
-	}
+        $orm = new HangSanXuat();
+        $orm->tenhang = $request->tenhang;
+        $orm->tenhang_slug = Str::slug($request->tenhang, '-');
 
-	public function postSua(Request $request, $id)
-	{
-		$request->validate([
-			'tenhang' => ['required', 'string', 'max:255', 'unique:hangsanxuat,tenhang,' . $id],
-			'hinhanh' => ['nullable', 'image', 'max:1024']
-		]);
+        if ($request->hasFile('hinhanh')) {
+            $extension = $request->file('hinhanh')->extension();
+            $filename = Str::slug($request->tenhang, '-') . '.' . $extension;
+            $orm->hinhanh = Storage::disk('public')->putFileAs('hang-san-xuat', $request->file('hinhanh'), $filename);
+        }
 
-		$orm = HangSanXuat::find($id);
-		$path = null;
+        $orm->save();
 
-		if ($request->hasFile('hinhanh')) {
-			if ($orm->hinhanh) Storage::delete($orm->hinhanh);
+        return redirect()->route('admin.hangsanxuat');
+    }
 
-			$file = $request->file('hinhanh');
-			$extension = $file->extension();
-			$filename = Str::slug($request->tenhang, '-') . '.' . $extension;
-			$path = $file->storeAs('hang-san-xuat', $filename);
-		}
+    public function getSua($id)
+    {
+        $hangsanxuat = HangSanXuat::findOrFail($id);
+        return view('admin.hangsanxuat.sua', compact('hangsanxuat'));
+    }
 
-		$orm->tenhang = $request->tenhang;
-		$orm->tenhang_slug = Str::slug($request->tenhang, '-');
-		$orm->hinhanh = $path ?? $orm->hinhanh ?? null;
-		$orm->save();
+    public function postSua(Request $request, $id)
+    {
+        $request->validate([
+            'tenhang' => ['required', 'string', 'max:255', 'unique:hangsanxuat,tenhang,' . $id],
+            'hinhanh' => ['nullable', 'image', 'max:2048'],
+        ]);
 
-		return redirect()->route('hangsanxuat');
-	}
+        $orm = HangSanXuat::findOrFail($id);
+        $orm->tenhang = $request->tenhang;
+        $orm->tenhang_slug = Str::slug($request->tenhang, '-');
 
-	public function getXoa($id)
-	{
-		$orm = HangSanXuat::find($id);
-		$hinhanh = $orm->hinhanh;
-		$orm->delete();
+        if ($request->hasFile('hinhanh')) {
+            if (!empty($orm->hinhanh) && Storage::disk('public')->exists($orm->hinhanh)) {
+                Storage::disk('public')->delete($orm->hinhanh);
+            }
 
-		if ($hinhanh) Storage::delete($hinhanh);
+            $extension = $request->file('hinhanh')->extension();
+            $filename = Str::slug($request->tenhang, '-') . '.' . $extension;
+            $orm->hinhanh = Storage::disk('public')->putFileAs('hang-san-xuat', $request->file('hinhanh'), $filename);
+        }
 
-		return redirect()->route('hangsanxuat');
-	}
+        $orm->save();
+
+        return redirect()->route('admin.hangsanxuat');
+    }
+
+    public function getXoa($id)
+    {
+        $orm = HangSanXuat::findOrFail($id);
+
+        if (!empty($orm->hinhanh) && Storage::disk('public')->exists($orm->hinhanh)) {
+            Storage::disk('public')->delete($orm->hinhanh);
+        }
+
+        $orm->delete();
+
+        return redirect()->route('admin.hangsanxuat');
+    }
+
+    public function postNhap(Request $request)
+    {
+        $request->validate([
+            'file_excel' => ['required', 'file', 'mimes:xlsx,xls'],
+        ]);
+
+        Excel::import(new HangSanXuatImport, $request->file('file_excel'));
+
+        return redirect()->route('admin.hangsanxuat');
+    }
+
+    public function getXuat()
+    {
+        return Excel::download(new HangSanXuatExport, 'danh-sach-hang-san-xuat.xlsx');
+    }
 }
